@@ -1,0 +1,13 @@
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+/target/
+/frontend/node_modules/
+.gradle
+*.db
+.out
+/build/
+/src-gen
+.DS_Store
