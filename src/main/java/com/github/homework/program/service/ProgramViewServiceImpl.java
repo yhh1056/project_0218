@@ -29,15 +29,7 @@ public class ProgramViewServiceImpl implements ProgramViewService {
     @Override
     public Optional<ProgramViewDto> getBy(Long id) {
         Optional<Program> byId = programRepository.findById(id);
-        return byId.map(p ->
-                new ProgramViewDto(
-                        p.getId(),
-                        p.getName(),
-                        p.getIntroduction(),
-                        p.getIntroductionDetail(),
-                        p.getRegion()
-                )
-        );
+        return byId.map(ProgramViewDto::create);
     }
 
     @Override
