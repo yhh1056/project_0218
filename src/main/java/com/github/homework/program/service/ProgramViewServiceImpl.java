@@ -14,6 +14,7 @@ import org.springframework.transaction.TransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +36,8 @@ public class ProgramViewServiceImpl implements ProgramViewService {
                         p.getName(),
                         p.getIntroduction(),
                         p.getIntroductionDetail(),
-                        p.getRegion()
+                        p.getRegion(),
+                        p.getTheme().getName()
                 )
         );
     }

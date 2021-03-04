@@ -43,6 +43,7 @@ public class ProgramControllerTest extends BaseControllerTest {
                 .andExpect(jsonPath("introduction").value("여수시 일대 게장백반, 돌산갓김치등"))
                 .andExpect(jsonPath("introductionDetail").value("여행자와 현지인이 꼽은 최고의 먹거리 여행지' 에서 대한민국 229개 지방자치단체 중 여수시가 1위에 선정되어 식도락 여행에 최적화된 프로그램"))
                 .andExpect(jsonPath("region").value("전라남도 여수시"))
+                .andExpect(jsonPath("themeName").value("식도락여행"))
                 .andDo(write.document(
                         pathParameters(
                                 parameterWithName("id").description("id")
@@ -68,6 +69,7 @@ public class ProgramControllerTest extends BaseControllerTest {
                 .andExpect(jsonPath("$..introduction").value("여수시 일대 게장백반, 돌산갓김치등"))
                 .andExpect(jsonPath("$..introductionDetail").value("여행자와 현지인이 꼽은 최고의 먹거리 여행지' 에서 대한민국 229개 지방자치단체 중 여수시가 1위에 선정되어 식도락 여행에 최적화된 프로그램"))
                 .andExpect(jsonPath("$..region").value("전라남도 여수시"))
+                .andExpect(jsonPath("$..themeName").value("식도락여행"))
                 .andExpect(jsonPath("totalPages").value("1"))
                 .andExpect(jsonPath("totalElements").value("1"));
     }

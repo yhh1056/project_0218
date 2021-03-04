@@ -28,9 +28,13 @@ public class Program {
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator = "program_seq_generator")
     private Long id;
+    @Column(name = "name", nullable = false)
     private String name;
+    @Column(name = "introduction", nullable = false)
     private String introduction;
+    @Column(name = "region", nullable = false)
     private String region;
+    @Column(name = "introduction_detail", nullable = false)
     private String introductionDetail;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
