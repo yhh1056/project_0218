@@ -1,5 +1,6 @@
 package com.github.homework.program.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.BDDMockito.given;
 
@@ -81,5 +82,30 @@ class ProgramViewServiceImplTest {
                     then(p.getThemeName()).isEqualTo("themeName");
                 }
         );
+    }
+
+    @Test
+    @DisplayName("테마를 조회하여 프로그램을 가져온다.")
+    void getByTheme() {
+        //given
+        Theme theme = new Theme("theme");
+        Program program = Program.builder()
+                .name("name")
+                .introduction("introduction")
+                .introductionDetail("introductionDetail")
+                .region("region")
+                .theme(theme)
+                .build();
+
+        given(programRepository.findByTheme(theme)).willReturn(List.of(program));
+        //when
+        List<ProgramViewDto> programViewDtos = programViewService.getByTheme(theme);
+        //then
+        assertThat(programViewDtos.size()).isEqualTo(1);
+        assertThat(programViewDtos.get(0).getName()).isEqualTo("name");
+        assertThat(programViewDtos.get(0).getIntroduction()).isEqualTo("introduction");
+        assertThat(programViewDtos.get(0).getIntroductionDetail()).isEqualTo("introductionDetail");
+        assertThat(programViewDtos.get(0).getRegion()).isEqualTo("region");
+        assertThat(programViewDtos.get(0).getThemeName()).isEqualTo("theme");
     }
 }

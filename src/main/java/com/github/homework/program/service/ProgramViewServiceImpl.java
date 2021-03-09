@@ -31,19 +31,31 @@ public class ProgramViewServiceImpl implements ProgramViewService {
     public Optional<ProgramViewDto> getBy(Long id) {
         Optional<Program> byId = programRepository.findById(id);
         return byId.map(p ->
-                new ProgramViewDto(
-                        p.getId(),
-                        p.getName(),
-                        p.getIntroduction(),
-                        p.getIntroductionDetail(),
-                        p.getRegion(),
-                        p.getTheme().getName()
-                )
+                getProgramViewDto(p)
+        );
+    }
+
+    private ProgramViewDto getProgramViewDto(Program program) {
+        return new ProgramViewDto(
+                program.getId(),
+                program.getName(),
+                program.getIntroduction(),
+                program.getIntroductionDetail(),
+                program.getRegion(),
+                program.getTheme().getName()
         );
     }
 
     @Override
     public Page<ProgramViewDto> pageBy(Pageable pageable) {
         return programRepository.findBy(pageable);
+    }
+
+    @Override
+    public List<ProgramViewDto> getByTheme(Theme theme) {
+        List<Program> programs = programRepository.findByTheme(theme);
+        return programs.stream()
+                .map(p -> getProgramViewDto(p))
+                .collect(Collectors.toList());
     }
 }
