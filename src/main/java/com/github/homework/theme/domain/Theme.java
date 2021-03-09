@@ -3,6 +3,8 @@ package com.github.homework.theme.domain;
 
 import com.github.homework.program.domain.Program;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.*;
 
 import lombok.AccessLevel;
@@ -37,4 +39,6 @@ public class Theme {
         this.name = name;
     }
 
+    @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL)
+    private List<Program> programs = new ArrayList<>();
 }
