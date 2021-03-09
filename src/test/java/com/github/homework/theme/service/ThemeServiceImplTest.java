@@ -6,6 +6,7 @@ import static org.mockito.BDDMockito.given;
 
 import com.github.homework.theme.domain.Theme;
 import com.github.homework.theme.repository.ThemeRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,5 +51,16 @@ public class ThemeServiceImplTest {
         then(theme.getName()).isEqualTo("자연체험");
     }
 
+    @Test
+    @DisplayName("테마 이름 조회")
+    void findThemeName() {
+        //given
+        given(this.themeRepository.findByName("자연체험")).willReturn(Optional.of(new Theme("자연체험")));
 
+        //when
+        Theme theme = this.themeService.getTheme("자연체험");
+
+        //then
+        then(theme.getName()).isEqualTo("자연체험");
+    }
 }

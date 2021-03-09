@@ -19,4 +19,10 @@ public class ThemeServiceImpl implements ThemeService {
             .findByName(themeName)
             .orElseGet(() -> this.themeRepository.save(new Theme(themeName)));
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Theme getTheme(String themeName) {
+        return themeRepository.findByName(themeName).orElseThrow();
+    }
 }
