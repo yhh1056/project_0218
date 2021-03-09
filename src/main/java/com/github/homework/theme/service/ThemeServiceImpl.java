@@ -1,5 +1,6 @@
 package com.github.homework.theme.service;
 
+import com.github.homework.program.exception.ProgramNotFoundException;
 import com.github.homework.theme.domain.Theme;
 import com.github.homework.theme.repository.ThemeRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class ThemeServiceImpl implements ThemeService {
 
     @Override
     @Transactional(readOnly = true)
-    public Theme getTheme(String themeName) {
-        return themeRepository.findByName(themeName).orElseThrow();
+    public Theme getTheme(String themeName) throws ProgramNotFoundException {
+        return themeRepository.findByName(themeName).orElseThrow(ProgramNotFoundException::new);
     }
 }

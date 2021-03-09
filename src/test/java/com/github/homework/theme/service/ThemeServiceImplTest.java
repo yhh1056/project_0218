@@ -4,6 +4,7 @@ import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.BDDMockito.given;
 
+import com.github.homework.program.exception.ProgramNotFoundException;
 import com.github.homework.theme.domain.Theme;
 import com.github.homework.theme.repository.ThemeRepository;
 import java.util.Optional;
@@ -53,7 +54,7 @@ public class ThemeServiceImplTest {
 
     @Test
     @DisplayName("테마 이름 조회")
-    void findThemeName() {
+    void findThemeName() throws ProgramNotFoundException {
         //given
         given(this.themeRepository.findByName("자연체험")).willReturn(Optional.of(new Theme("자연체험")));
 
@@ -62,5 +63,11 @@ public class ThemeServiceImplTest {
 
         //then
         then(theme.getName()).isEqualTo("자연체험");
+    }
+
+    @Test
+    @DisplayName("테마 이름 조회 결과 없음")
+    void notfoundThemeName() {
+        Assertions.assertThrows(ProgramNotFoundException.class, () -> themeService.getTheme("힐링여행"));
     }
 }
