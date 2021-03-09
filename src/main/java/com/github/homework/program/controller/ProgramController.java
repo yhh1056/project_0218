@@ -7,6 +7,8 @@ import com.github.homework.program.model.SimpleResponse;
 import com.github.homework.program.service.ProgramSaveService;
 import com.github.homework.program.service.ProgramViewService;
 
+import com.github.homework.theme.domain.Theme;
+import com.github.homework.theme.service.ThemeService;
 import java.util.List;
 import java.util.Optional;
 import javax.validation.Valid;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 public class ProgramController {
     private final ProgramViewService programViewService;
     private final ProgramSaveService programSaveService;
+    private final ThemeService themeService;
 
     @GetMapping
     public ResponseEntity<Page<ProgramViewDto>> pageBy(
@@ -36,6 +39,17 @@ public class ProgramController {
     public ResponseEntity<ProgramViewDto> getBy(@PathVariable Long id) {
         Optional<ProgramViewDto> programViewDto = this.programViewService.getBy(id);
         return programViewDto.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/theme/{name}")
+    public ResponseEntity<List<ProgramViewDto>> getByThemeName(@PathVariable String name) {
+        try {
+            Theme theme = themeService.getTheme(name);
+
+            return ResponseEntity.ok().body(programViewService.getByTheme(theme));
+        } catch (ProgramNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping

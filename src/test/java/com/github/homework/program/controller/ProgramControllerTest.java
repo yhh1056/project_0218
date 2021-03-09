@@ -75,6 +75,24 @@ public class ProgramControllerTest extends BaseControllerTest {
     }
 
     @Test
+    @DisplayName("테마 이름으로 프로그램 조회")
+    public void getProgramByThemeNameTest() throws Exception {
+        Program program = givenProgram(givenTheme("식도락여행"));
+        this.mockMvc.perform(get("/api/programs/theme/{name}", program.getTheme().getName()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$..name").value("여수 10미 먹거리"))
+                .andExpect(jsonPath("$..introduction").value("여수시 일대 게장백반, 돌산갓김치등"))
+                .andExpect(jsonPath("$..introductionDetail").value("여행자와 현지인이 꼽은 최고의 먹거리 여행지' 에서 대한민국 229개 지방자치단체 중 여수시가 1위에 선정되어 식도락 여행에 최적화된 프로그램"))
+                .andExpect(jsonPath("$..region").value("전라남도 여수시"))
+                .andExpect(jsonPath("$..themeName").value("식도락여행"))
+                .andDo(write.document(
+                        pathParameters(
+                                parameterWithName("name").description("theme name")
+                        )
+                ));
+    }
+
+    @Test
     @DisplayName("프로그램 저장 정상 케이스")
     public void saveProgramTest() throws Exception {
         ProgramSaveDto programSaveDto = ProgramSaveDto.builder().name("여수 10미 먹거리")
