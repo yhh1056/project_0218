@@ -41,4 +41,9 @@ public class Theme {
 
     @OneToMany(mappedBy = "theme", cascade = CascadeType.ALL)
     private List<Program> programs = new ArrayList<>();
+
+    public void addProgram(Program program) {
+        programs.add(program);
+        program.setTheme(this);
+    }
 }

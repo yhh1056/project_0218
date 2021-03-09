@@ -41,8 +41,8 @@ public class ProgramController {
     }
 
     @GetMapping("/theme/{name}")
-    public ResponseEntity<List<ProgramViewDto>>get(@PathVariable String name) {
-        try{
+    public ResponseEntity<List<ProgramViewDto>> getByThemeName(@PathVariable String name) {
+        try {
             return ResponseEntity.ok().body(themeService.getByName(name));
         } catch (ProgramNotFoundException e) {
             return ResponseEntity.notFound().build();

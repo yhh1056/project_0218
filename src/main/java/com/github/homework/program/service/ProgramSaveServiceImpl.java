@@ -27,6 +27,7 @@ public class ProgramSaveServiceImpl implements ProgramSaveService {
             .introductionDetail(programSaveDto.getIntroductionDetail())
             .region(programSaveDto.getRegion())
             .theme(theme).build();
+        theme.addProgram(program);
         this.programRepository.save(program);
     }
 
