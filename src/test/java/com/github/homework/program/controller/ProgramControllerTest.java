@@ -58,6 +58,31 @@ public class ProgramControllerTest extends BaseControllerTest {
     }
 
     @Test
+    @DisplayName("프로그램 이름으로 조회")
+    public void getProgramByName() throws Exception {
+        Program program = givenProgram(givenTheme("식도락여행"));
+        this.mockMvc.perform(get("/api/programs/name/{name}", program.getName()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("id").isNumber())
+                .andExpect(jsonPath("name").value("여수 10미 먹거리"))
+                .andExpect(jsonPath("introduction").value("여수시 일대 게장백반, 돌산갓김치등"))
+                .andExpect(jsonPath("introductionDetail").value("여행자와 현지인이 꼽은 최고의 먹거리 여행지' 에서 대한민국 229개 지방자치단체 중 여수시가 1위에 선정되어 식도락 여행에 최적화된 프로그램"))
+                .andExpect(jsonPath("region").value("전라남도 여수시"))
+                .andDo(write.document(
+                        pathParameters(
+                                parameterWithName("name").description("program name")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("프로그램 이름으로 조회 결과 없음")
+    public void getProgramByNameNotFound() throws Exception {
+        this.mockMvc.perform(get("/api/programs/name/{name}", "no"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     @DisplayName("프로그램 page 조회")
     public void getPageProgramTest() throws Exception {
         givenProgram(givenTheme("식도락여행"));

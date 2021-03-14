@@ -12,4 +12,6 @@ public interface ProgramViewService {
     Optional<ProgramViewDto> getBy(Long id);
 
     Page<ProgramViewDto> pageBy(Pageable pageable);
+
+    Optional<ProgramViewDto> getByProgramName(String name);
 }

@@ -44,4 +44,18 @@ public class ProgramViewServiceImpl implements ProgramViewService {
     public Page<ProgramViewDto> pageBy(Pageable pageable) {
         return programRepository.findBy(pageable);
     }
+
+    @Override
+    public Optional<ProgramViewDto> getByProgramName(String name) {
+        Optional<Program> byName = programRepository.findByName(name);
+        return byName.map(p ->
+                new ProgramViewDto(
+                        p.getId(),
+                        p.getName(),
+                        p.getIntroduction(),
+                        p.getIntroductionDetail(),
+                        p.getRegion()
+                )
+        );
+    }
 }
