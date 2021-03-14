@@ -28,7 +28,10 @@ public class ProgramViewServiceImpl implements ProgramViewService {
 
     @Override
     public Optional<ProgramViewDto> getBy(Long id) {
-        Optional<Program> byId = programRepository.findById(id);
+        return createProgramViewDto(programRepository.findById(id));
+    }
+
+    private Optional<ProgramViewDto> createProgramViewDto(Optional<Program> byId) {
         return byId.map(p ->
                 new ProgramViewDto(
                         p.getId(),
@@ -47,15 +50,6 @@ public class ProgramViewServiceImpl implements ProgramViewService {
 
     @Override
     public Optional<ProgramViewDto> getByProgramName(String name) {
-        Optional<Program> byName = programRepository.findByName(name);
-        return byName.map(p ->
-                new ProgramViewDto(
-                        p.getId(),
-                        p.getName(),
-                        p.getIntroduction(),
-                        p.getIntroductionDetail(),
-                        p.getRegion()
-                )
-        );
+        return createProgramViewDto(programRepository.findByName(name));
     }
 }
