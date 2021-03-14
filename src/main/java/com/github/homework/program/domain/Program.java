@@ -24,6 +24,8 @@ import lombok.ToString;
 @ToString
 public class Program {
 
+    private static final int READ_COUNT = 1;
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
             generator = "program_seq_generator")
@@ -32,6 +34,7 @@ public class Program {
     private String introduction;
     private String region;
     private String introductionDetail;
+    private int readCount;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "theme_id")
@@ -54,5 +57,9 @@ public class Program {
         this.region = region;
         this.theme = theme;
 
+    }
+
+    public void increaseReadCount() {
+        this.readCount += READ_COUNT;
     }
 }

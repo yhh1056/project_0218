@@ -1,5 +1,6 @@
 package com.github.homework.program.service;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.BDDAssertions.then;
 import static org.mockito.BDDMockito.given;
 
@@ -55,6 +56,28 @@ class ProgramViewServiceImplTest {
                 }
         );
 
+    }
+
+    @Test
+    @DisplayName("프로그램을 10번 조회한 후 결과")
+    void getReadCount() {
+        //given
+        Program program = Program.builder()
+                .name("name")
+                .introduction("introduction")
+                .introductionDetail("introductionDetail")
+                .region("region")
+                .theme(new Theme("theme"))
+                .build();
+        given(programRepository.findById(1L)).willReturn(Optional.of(program));
+        //when
+        for (int i = 0; i < 10; i++) {
+            programViewService.getBy(1L);
+        }
+        //then
+        Program result = programRepository.findById(1L).get();
+
+        assertThat(result.getReadCount()).isEqualTo(10);
     }
 
     @Test
