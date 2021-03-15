@@ -14,4 +14,6 @@ public interface ProgramViewService {
     Page<ProgramViewDto> pageBy(Pageable pageable);
 
     Optional<ProgramViewDto> getByProgramName(String name);
+
+    List<ProgramViewDto> getTopTenPrograms();
 }

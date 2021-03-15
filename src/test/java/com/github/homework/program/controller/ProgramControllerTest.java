@@ -17,6 +17,7 @@ import com.github.homework.program.repository.ProgramRepository;
 import com.github.homework.theme.domain.Theme;
 import com.github.homework.theme.repository.ThemeRepository;
 
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.IntStream;
 
@@ -96,6 +97,25 @@ public class ProgramControllerTest extends BaseControllerTest {
                 .andExpect(jsonPath("totalPages").value("1"))
                 .andExpect(jsonPath("totalElements").value("1"));
     }
+
+    @Test
+    @DisplayName("프로그램 조회수 상위 10개 조회")
+    public void getTopTenProgram() throws Exception {
+        initProgramTestData();
+        this.mockMvc.perform(get("/api/programs/top10"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("[0]..name").value("부산 여행 20"))
+                .andExpect(jsonPath("[1]..name").value("부산 여행 19"))
+                .andExpect(jsonPath("[2]..name").value("부산 여행 18"))
+                .andExpect(jsonPath("[3]..name").value("부산 여행 17"))
+                .andExpect(jsonPath("[4]..name").value("부산 여행 16"))
+                .andExpect(jsonPath("[5]..name").value("부산 여행 15"))
+                .andExpect(jsonPath("[6]..name").value("부산 여행 14"))
+                .andExpect(jsonPath("[7]..name").value("부산 여행 13"))
+                .andExpect(jsonPath("[8]..name").value("부산 여행 12"))
+                .andExpect(jsonPath("[9]..name").value("부산 여행 11"));
+    }
+
 
     @Test
     @DisplayName("프로그램 저장 정상 케이스")
@@ -195,5 +215,27 @@ public class ProgramControllerTest extends BaseControllerTest {
 
     private Theme givenTheme(String name) {
         return this.themeRepository.save(new Theme(name));
+    }
+
+    //프로그램 이름의 숫자가 높을수록 조회수가 높은 20개의 프로그램을 생성한다.
+    private void initProgramTestData() {
+        for (int i = 1; i <= 20; i++) {
+            Program program = Program.builder().name("부산 여행 " + i)
+                    .region("부산")
+                    .introduction("부산의 꽃 축제")
+                    .introductionDetail(
+                            "꽃이 필 시기에 여행하기 좋은 프로그램")
+                    .theme(new Theme("부산 벛꽃 투어" + i))
+                    .build();
+            programRepository.save(program);
+        }
+
+        for (int i = 1; i <= 20; i++) {
+            for (int j = 0; j < i; j++) {
+                Program program = programRepository.findById((long) i).get();
+                program.increaseReadCount();
+            }
+        }
+
     }
 }

@@ -45,6 +45,15 @@ public class ProgramController {
         return programViewDto.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/top10")
+    public ResponseEntity<List<ProgramViewDto>> getTopTenPrograms() {
+        List<ProgramViewDto> topTenPrograms = programViewService.getTopTenPrograms();
+        if (topTenPrograms.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(topTenPrograms);
+    }
+
     @PostMapping
     public ResponseEntity<SimpleResponse> saveProgram(@RequestBody @Valid ProgramSaveDto
                                                               programSaveDto) {

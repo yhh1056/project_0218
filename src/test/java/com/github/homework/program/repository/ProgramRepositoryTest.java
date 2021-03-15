@@ -1,5 +1,6 @@
 package com.github.homework.program.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.BDDAssertions.then;
 
 import com.github.homework.program.domain.Program;
@@ -11,6 +12,7 @@ import java.util.Set;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.matchers.Equality;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -60,5 +62,32 @@ class ProgramRepositoryTest {
                 then(programViewDto.getRegion()).isEqualTo("region");
             }
         );
+    }
+
+    @Test
+    @DisplayName("조회수가 높은 순서대로 출력된다.")
+    public void getTopTenProgram() {
+        for (int i = 0; i < 10; i++) {
+            Program program = Program.builder()
+                    .name("name")
+                    .introduction("introduction")
+                    .introductionDetail("introductionDetail")
+                    .region("region")
+                    .theme(new Theme("theme" + i))
+                    .build();
+            for (int j = 0; j < i; j++) {
+                program.increaseReadCount();
+            }
+
+            testEntityManager.persist(program);
+            testEntityManager.flush();
+            testEntityManager.clear();
+        }
+
+        List<Program> result = programRepository.findTop10ByOrderByReadCountDesc();
+        int readCount = 9;
+        for (Program program : result) {
+            assertThat(program.getReadCount()).isEqualTo(readCount--);
+        }
     }
 }
