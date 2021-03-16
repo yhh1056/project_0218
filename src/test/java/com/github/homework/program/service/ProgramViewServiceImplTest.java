@@ -59,28 +59,6 @@ class ProgramViewServiceImplTest {
     }
 
     @Test
-    @DisplayName("프로그램을 10번 조회한 후 결과")
-    void getReadCount() {
-        //given
-        Program program = Program.builder()
-                .name("name")
-                .introduction("introduction")
-                .introductionDetail("introductionDetail")
-                .region("region")
-                .theme(new Theme("theme"))
-                .build();
-        given(programRepository.findById(1L)).willReturn(Optional.of(program));
-        //when
-        for (int i = 0; i < 10; i++) {
-            programViewService.getBy(1L);
-        }
-        //then
-        Program result = programRepository.findById(1L).get();
-
-        assertThat(result.getReadCount()).isEqualTo(10);
-    }
-
-    @Test
     @DisplayName("프로그램이 여러개 일때")
     void pageByTest() {
         //given

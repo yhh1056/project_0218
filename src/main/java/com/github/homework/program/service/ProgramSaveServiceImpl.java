@@ -45,5 +45,17 @@ public class ProgramSaveServiceImpl implements ProgramSaveService {
         );
     }
 
+    @Override
+    @Transactional
+    public void increaseReadCount(Long byId) throws ProgramNotFoundException {
+        programRepository.findById(byId).orElseThrow(ProgramNotFoundException::new).increaseReadCount();
+
+    }
+
+    @Override
+    @Transactional
+    public void increaseReadCount(String name) throws ProgramNotFoundException {
+        programRepository.findByName(name).orElseThrow(ProgramNotFoundException::new).increaseReadCount();
+    }
 
 }

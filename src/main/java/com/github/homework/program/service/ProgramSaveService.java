@@ -8,4 +8,7 @@ public interface ProgramSaveService {
     void saveProgram(ProgramSaveDto programSaveDto);
 
     void updateProgram(ProgramSaveDto programSaveDto) throws ProgramNotFoundException;
+
+    void increaseReadCount(Long byId) throws ProgramNotFoundException;
+    void increaseReadCount(String name) throws ProgramNotFoundException;
 }

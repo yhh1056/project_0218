@@ -36,12 +36,22 @@ public class ProgramController {
     @GetMapping("/{id}")
     public ResponseEntity<ProgramViewDto> getBy(@PathVariable Long id) {
         Optional<ProgramViewDto> programViewDto = this.programViewService.getBy(id);
+        try {
+            this.programSaveService.increaseReadCount(id);
+        } catch (ProgramNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
         return programViewDto.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/name/{name}")
     public ResponseEntity<ProgramViewDto> getByProgramName(@PathVariable String name) {
         Optional<ProgramViewDto> programViewDto = this.programViewService.getByProgramName(name);
+        try {
+            this.programSaveService.increaseReadCount(name);
+        } catch (ProgramNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
         return programViewDto.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
