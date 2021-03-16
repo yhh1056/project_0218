@@ -21,10 +21,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.IntStream;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.transaction.annotation.Transactional;
 
 public class ProgramControllerTest extends BaseControllerTest {
     @Autowired
@@ -100,8 +102,9 @@ public class ProgramControllerTest extends BaseControllerTest {
 
     @Test
     @DisplayName("프로그램 조회수 상위 10개 조회")
+    @Transactional
     public void getTopTenProgram() throws Exception {
-        initProgramTestData();
+         initProgramTestData();
         this.mockMvc.perform(get("/api/programs/top10"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("[0]..name").value("부산 여행 20"))
@@ -230,10 +233,9 @@ public class ProgramControllerTest extends BaseControllerTest {
             programRepository.save(program);
         }
 
-        for (int i = 1; i <= 20; i++) {
+        for (int i = 3; i <= 22; i++) {
             for (int j = 0; j < i; j++) {
-                Program program = programRepository.findById((long) i).get();
-                program.increaseReadCount();
+               programRepository.findById((long) i).orElseThrow(IllegalArgumentException::new).increaseReadCount();
             }
         }
 
